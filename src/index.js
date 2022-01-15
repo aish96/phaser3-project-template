@@ -8,10 +8,20 @@ import playGame from "./phaser/scene";
 
 export const config = {
   type: Phaser.AUTO,
-  parent: "phaser",
-  width: 800,
-  height: 600,
-  scene: playGame
+    parent: 'phaser',
+    width: 1280,
+    height: 720,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: true
+        }
+    },
+    scale: {
+        zoom: 2
+    },
+    scene: [playGame]
 };
 
 const game = new Phaser.Game(config);
