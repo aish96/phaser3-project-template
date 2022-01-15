@@ -1,4 +1,4 @@
-import PlayScene from './scenes/PlayScene';
+import playGame from './scene';
 export const  Direction = {
     NONE : 'none',
     LEFT : 'left',
@@ -9,10 +9,12 @@ export const  Direction = {
 export class Player {
     // container:Phaser.GameObjects.Container;
     constructor(sprite, tilePos) {
-        const offsetX = PlayScene.TILE_SIZE / 2;
-        const offsetY = PlayScene.TILE_SIZE;
+        const offsetX = playGame.TILE_SIZE / 2;
+        const offsetY = playGame.TILE_SIZE;
+        this.sprite = sprite;
+        this.tilePos = tilePos;
         // (this.sprite.body as Phaser.Physics.Arcade.Body).setOrigin(0.5, 1);
-        this.sprite.setPosition(tilePos.x * PlayScene.TILE_SIZE + offsetX, tilePos.y * PlayScene.TILE_SIZE + offsetY);
+        sprite.setPosition(tilePos.x * playGame.TILE_SIZE + offsetX, tilePos.y * playGame.TILE_SIZE + offsetY);
         // this.sprite.setFrame(55);
     }
 

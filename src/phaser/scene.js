@@ -1,12 +1,17 @@
 import Phaser from "phaser";
-import logoImg from "../assets/logo.png";
-
+import tiles from "../assets/tilemaps/dungeon.png";
+import dungeon from "../assets/dungeons/dungeon.json";
+import playerImg from "../assets/sprites/addition.png";
+import box from "../assets/tiles/box.jpg";
+import { Direction, Player } from './Player';
+import { GridPhysics } from './GridPhysics';
+import { GridControls } from './GridControl';
 class playGame extends Phaser.Scene {
   previousDirection = null;
     static TILE_SIZE = 32;
-    player!;
+    player;
     cursors;
-    playerGroup!;
+    playerGroup;
     gridPhysics;
     gridControls;
     constructor() {
@@ -15,10 +20,10 @@ class playGame extends Phaser.Scene {
         });
     }
   preload() {
-    this.load.image('tiles', '/assets/tilemaps/dungeon.png');
-        this.load.tilemapTiledJSON('dungeon', '/assets/dungeons/dungeon.json');
-        this.load.image('player', '/assets/sprites/addition.png');
-        this.load.image('box', '/assets/tiles/box.jpg');
+    this.load.image('tiles', tiles);
+        this.load.tilemapTiledJSON('dungeon', dungeon);
+        this.load.image('player', playerImg);
+        this.load.image('box', box);
   }
   create() {
     let map = this.make.tilemap({ key: 'dungeon' });
@@ -54,17 +59,17 @@ class playGame extends Phaser.Scene {
     this.playerGroup.add(box);
     let xPos, yPos;
     if (this.previousDirection === Direction.LEFT) {
-        xPos = this.player.x - TestScene.TILE_SIZE;
+        xPos = this.player.x - playGame.TILE_SIZE;
         yPos = this.player.y;
     } else if (this.previousDirection === Direction.RIGHT) {
-        xPos = this.player.x + TestScene.TILE_SIZE;
+        xPos = this.player.x + playGame.TILE_SIZE;
         yPos = this.player.y;
     } else if (this.previousDirection === Direction.UP) {
         xPos = this.player.x;
-        yPos = this.player.y - TestScene.TILE_SIZE;
+        yPos = this.player.y - playGame.TILE_SIZE;
     } else if (this.previousDirection === Direction.DOWN) {
         xPos = this.player.x;
-        yPos = this.player.y + TestScene.TILE_SIZE;
+        yPos = this.player.y + playGame.TILE_SIZE;
     }
     box.setPosition(xPos, yPos);
 }
