@@ -117,7 +117,7 @@ queue=[];
     this.cursors = this.input.keyboard.createCursorKeys();
     
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.cameras.main.startFollow(this.playerGroup, false);
+    // this.cameras.main.startFollow(this.playerGroup, false);
     
     const player = new Player(this.playerGroup, new Phaser.Math.Vector2(3, 5));
     
