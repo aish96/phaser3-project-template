@@ -3,7 +3,7 @@ const presets = [
     "@babel/env",
     {
       targets: {
-        browsers: [">0.25%", "not ie 11", "not op_mini all"],
+        browsers: ["last 2 Chrome versions"],
         node: "current"
       },
       modules: false
@@ -15,7 +15,6 @@ const plugins = [
   "@babel/plugin-proposal-class-properties",
   "@babel/plugin-transform-modules-commonjs",
   "@babel/plugin-transform-runtime"
-
 ];
 
 module.exports = { presets, plugins };
