@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = {
 	mode: "development",
@@ -39,6 +40,11 @@ module.exports = {
 			},
 		],
 	},
+	resolve: {
+		fallback: {
+			"http": require.resolve("stream-http")
+		  }	
+	},
 	plugins: [
 		new CleanWebpackPlugin(),
 		new webpack.DefinePlugin({
@@ -50,5 +56,6 @@ module.exports = {
 			filename: "index.html",
 			inject: "body",
 		}),
+		new NodePolyfillPlugin(),	  
 	],
 };

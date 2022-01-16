@@ -19,12 +19,12 @@ export const config = {
         }
     },
     scale: {
-        zoom: 2
+        zoom: 1
     },
     scene: [playGame]
 };
 
-const game = new Phaser.Game(config);
+//const game = new Phaser.Game(config);
 
 ReactDOM.render(
   <App />,

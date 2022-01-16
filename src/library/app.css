@@ -1,0 +1,39 @@
+canvas {
+  width: 500px !important !important;
+  height: 500px !important !important;
+}
+
+.container {
+    margin: 20px;
+    height: 100px !important;
+
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    color: white;
+  }
+  
+  li {
+    float: left;
+  }
+
+  .right {
+      float: right; 
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }

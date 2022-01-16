@@ -13,7 +13,9 @@ const presets = [
 ];
 const plugins = [
   "@babel/plugin-proposal-class-properties",
-  "@babel/plugin-transform-modules-commonjs"
+  "@babel/plugin-transform-modules-commonjs",
+  "@babel/plugin-transform-runtime"
+
 ];
 
 module.exports = { presets, plugins };
