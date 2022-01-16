@@ -15,11 +15,11 @@ export const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            // debug: true
         }
     },
     scale: {
-        zoom: 2
+        zoom: 1.5
     },
     scene: [playGame]
 };
