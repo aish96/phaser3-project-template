@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./../library/app.css";
 import { getWeb3 } from "./connect";
-import { Dropdown } from "semantic-ui-react";
-import "semantic-ui-css/components/dropdown.css";
-import "semantic-ui-css/components/menu.css";
-import "semantic-ui-css/components/transition.css";
 import {
   BrowserRouter as Router,
   Route,
@@ -15,8 +11,9 @@ import Wallet from "./containers/Wallet.jsx";
 import Marketplace from "./containers/Marketplace.jsx";
 import Fund from "./containers/Superfliud.jsx";
 import axios from "axios";
-const fs = require('fs');
-const FormData = require('form-data');
+
+//import fs from 'fs';
+//import FormData from 'form-data';
 
 const deployNFTContract = (address) => {
   const options = {
@@ -44,28 +41,28 @@ const deployNFTContract = (address) => {
       console.error(error);
     });
 };
-const getIPFSURL = (image) => {
-  const form = new FormData();
-  const fileStream = fs.createReadStream("image.jpg");
-  form.append("file", fileStream);
+// const getIPFSURL = (image) => {
+//   const form = new FormData();
+//   const fileStream = fs.createReadStream("image.jpg");
+//   form.append("file", fileStream);
 
-  const options = {
-    method: "POST",
-    body: form,
-    headers: {
-      Authorization: "05e8cdcc-db29-4477-8540-42ce01ae8fc9",
-    },
-  };
+//   const options = {
+//     method: "POST",
+//     body: form,
+//     headers: {
+//       Authorization: "05e8cdcc-db29-4477-8540-42ce01ae8fc9",
+//     },
+//   };
 
-  axios.post("https://api.nftport.xyz/v0/files", options)
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseJson) => {
-      // Handle the response
-      console.log(responseJson);
-    });
-};
+//   axios.post("https://api.nftport.xyz/v0/files", options)
+//     .then((response) => {
+//       return response.json();
+//     })
+//     .then((responseJson) => {
+//       // Handle the response
+//       console.log(responseJson);
+//     });
+// };
 const mintNFT = (name, address, description, ipfs_url) => {
   const options = {
     method: "POST",
@@ -99,6 +96,18 @@ const mintNFT = (name, address, description, ipfs_url) => {
 const App = () => {
   const [web3, setWeb3] = useState(undefined);
   const [accounts, setAccounts] = useState(undefined);
+  const [tab, setTab] = useState(0);
+
+  const changeTabs = (taab, gamed) => {
+    setTab(taab);
+    const gamedisplay = document.getElementById("phaser");
+
+    if (!gamed) {
+		gamedisplay.style.visibility = "hidden";
+    } else {
+		gamedisplay.style.visibility = "visible";
+    }
+  };
   useEffect(() => {
     const init = async () => {
       const web3 = await getWeb3();
@@ -116,16 +125,16 @@ const App = () => {
     <div className={styles.container}>
       <ul>
         <li>
-          <a>Game</a>
+          <a onClick={(e) => changeTabs(0, true)}>Game</a>
         </li>
         <li>
-          <a> Egg Marketplace </a>
+          <a onClick={(e) => changeTabs(1, false)}> Egg Marketplace </a>
         </li>
         <li>
-          <a> Support Early Education </a>
+          <a onClick={(e) => changeTabs(2, false)}> Support Early Education </a>
         </li>
         <li>
-          <a href="/wallet"> Wallet </a>
+          <a onClick={(e) => changeTabs(3, false)}> Wallet </a>
         </li>
         {accounts ? (
           <li>
@@ -142,16 +151,10 @@ const App = () => {
         )}
       </ul>
       <br />
-      <Router>
-        <Routes>
-          <Route
-            path="/wallet"
-            element={
-              accounts !== undefined && <Wallet accounts={accounts[0]} />
-            }
-          ></Route>
-        </Routes>
-      </Router>
+      {tab == 3 && <Wallet accounts={accounts} styles={styles} />}
+      {tab == 2 && <Fund />}
+
+      {tab == 1 && <Marketplace />}
     </div>
   );
 };
