@@ -15,7 +15,7 @@ import axios from "axios";
 //import fs from 'fs';
 //import FormData from 'form-data';
 
-const deployNFTContract = (address) => {
+export const deployNFTContract = (address) => {
   const options = {
     method: "POST",
     url: "https://api.nftport.xyz/v0/contracts",
@@ -25,8 +25,8 @@ const deployNFTContract = (address) => {
     },
     data: {
       chain: "polygon",
-      name: "Polypunks",
-      symbol: "PP",
+      name: "Swanky Manky Math Game",
+      symbol: "SMMG",
       owner_address: address || "0xC6204532A1fF2059b33C574d22A3F5a745217aAE",
       metadata_updatable: false,
     },
@@ -41,29 +41,29 @@ const deployNFTContract = (address) => {
       console.error(error);
     });
 };
-// const getIPFSURL = (image) => {
-//   const form = new FormData();
-//   const fileStream = fs.createReadStream("image.jpg");
-//   form.append("file", fileStream);
+export const getIPFSURL = (image) => {
+  const form = new FormData();
+  const fileStream = fs.createReadStream("image.jpg");
+  form.append("file", fileStream);
 
-//   const options = {
-//     method: "POST",
-//     body: form,
-//     headers: {
-//       Authorization: "05e8cdcc-db29-4477-8540-42ce01ae8fc9",
-//     },
-//   };
+  const options = {
+    method: "POST",
+    body: form,
+    headers: {
+      Authorization: "05e8cdcc-db29-4477-8540-42ce01ae8fc9",
+    },
+  };
 
-//   axios.post("https://api.nftport.xyz/v0/files", options)
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((responseJson) => {
-//       // Handle the response
-//       console.log(responseJson);
-//     });
-// };
-const mintNFT = (name, address, description, ipfs_url) => {
+  axios.post("https://api.nftport.xyz/v0/files", options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseJson) => {
+      // Handle the response
+      console.log(responseJson);
+    });
+};
+export const mintNFT = (name, description, ipfs_url) => {
   const options = {
     method: "POST",
     url: "https://api.nftport.xyz/v0/metadata",
@@ -74,6 +74,7 @@ const mintNFT = (name, address, description, ipfs_url) => {
     data: {
       name: name,
       description: description,
+	  contract_address: "0x98f678EaaD11f6a522d38C741C1A9Df7aDFb2ba7",
       file_url: ipfs_url,
       attributes: [
         { trait_type: "Operator", value: "Addition" },

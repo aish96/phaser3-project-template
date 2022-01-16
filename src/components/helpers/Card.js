@@ -1,5 +1,5 @@
 import React from "react";
-function Card({ accounts, heading, description }) {
+function Card({ accounts, heading, description, image="https://i.picsum.photos/id/54/400/300.jpg?hmac=pv-6BOZ71KMjJ9G2CoaaVe3e4dMA8rD3YXEG7lXElxo" }) {
   return (
     <div
       style={{
@@ -14,7 +14,7 @@ function Card({ accounts, heading, description }) {
         transition: "all ease 200ms",
       }}
     >
-      <img src="https://i.picsum.photos/id/54/400/300.jpg?hmac=pv-6BOZ71KMjJ9G2CoaaVe3e4dMA8rD3YXEG7lXElxo" />
+      <img src={image} />
       <div style={{ padding: "1.2em" }}>
         <h2>{heading}</h2>
         <p>{description}</p>

@@ -17,7 +17,7 @@ import unlocked from "../assets/tiles/unlocked.png";
 import { Direction, Player } from './Player';
 import { GridPhysics } from './GridPhysics';
 import { GridControls } from './GridControl';
-
+import { mintNFT } from "./../components/App.jsx";
 const SYMBOLS = {
   ADD:'+',
   MINUS:'-',
@@ -30,19 +30,23 @@ const GAME_DATA = [
     numbers:[2,3,6],
     answer:5,
     symbol: SYMBOLS.ADD,
-    pos:[{x:60,y:60},{x:220,y:120},{x:220,y:220}]
+    pos:[{x:60,y:60},{x:220,y:120},{x:220,y:220}],
+    nft: ["Levelica 1", "This NFT has been awarded for completion of first level", "https://i.imgur.com/M2N57Qm.jpg"]
   },
   {
     numbers:[8,9],
     answer:17,
     symbol: SYMBOLS.ADD,
-    pos:[{x:50,y:50},{x:320,y:120}]
+    pos:[{x:50,y:50},{x:320,y:120}],
+    nft: ["Levelica 2", "This NFT has been awarded for completion of second level", "https://i.imgur.com/M2N57Qm.jpg"]
   },
   {
     numbers:[9,9],
     answer:1,
     symbol: SYMBOLS.ADD,
-    pos:[{x:50,y:50},{x:20,y:120}]
+    pos:[{x:50,y:50},{x:20,y:120}],
+    nft: ["Levelica 3", "This NFT has been awarded for completion of third level", "https://i.imgur.com/M2N57Qm.jpg"]
+
   }
 ]
 
@@ -117,7 +121,8 @@ queue=[];
     
     this.gridPhysics = new GridPhysics(player, map);
     this.gridControls = new GridControls(this.input, this.gridPhysics);
-    await this.createAndUnLock(GAME_DATA[i].answer);
+    await this.createAndUnLock(GAME_DATA[i]);
+
   }
   this.showGameComplete();
   }
@@ -159,19 +164,22 @@ queue=[];
     boundsAlignH: "center", boundsAlignV: "middle" };
     this.lock= this.physics.add.sprite(150, 150, 'locked').setScale(0.3);
     this.add.rectangle(150, 160, 20, 20, Phaser.Display.Color.HexStringToColor('#fff').color).setAlpha(1);
-    this.add.text(150,150,answer,style).setOrigin(0.5,0);
-    let collider = this.physics.add.collider(this.playerGroup, this.lock, ()=>{
+    this.add.text(150,150,answer.answer,style).setOrigin(0.5,0);
+    let collider = this.physics.add.collider(this.playerGroup, this.lock, (e, _lock)=>{
       let exp = this.queue.reduce((a,b)=>a+b.getData("value"),''),ans=0;
       try{
         ans = eval(exp);
       }catch(e){
 
       }
-      if(ans === answer){
+      if(ans === answer.answer){
+       _lock.play("unlock");
       collider.destroy();
+      this.expressionText.setText("Won a NFT!");
+      mintNFT(answer.nft[0], answer.nft[1], answer.nft[2]);
       setTimeout(()=>{
         return resolve();
-      },300);
+      },2000);
     }
     });
     });
