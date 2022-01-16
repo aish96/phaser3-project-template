@@ -98,7 +98,7 @@ const App = () => {
   const [web3, setWeb3] = useState(undefined);
   const [accounts, setAccounts] = useState(undefined);
   const [tab, setTab] = useState(0);
-
+  const [provider, setProvider] = useState(undefined);
   const changeTabs = (taab, gamed) => {
     setTab(taab);
     const gamedisplay = document.getElementById("phaser");
@@ -118,6 +118,7 @@ const App = () => {
       const accountsa = await web3.eth.getAccounts();
       setAccounts(accountsa);
       setWeb3(web3);
+	  setProvider(accountsmain);
     };
     init();
   }, []);
@@ -129,7 +130,7 @@ const App = () => {
           <a onClick={(e) => changeTabs(0, true)}>Game</a>
         </li>
         <li>
-          <a onClick={(e) => changeTabs(1, false)}> Egg Marketplace </a>
+          <a onClick={(e) => changeTabs(1, false)}> Marketplace </a>
         </li>
         <li>
           <a onClick={(e) => changeTabs(2, false)}> Support Early Education </a>
@@ -153,9 +154,9 @@ const App = () => {
       </ul>
       <br />
       {tab == 3 && <Wallet accounts={accounts} styles={styles} />}
-      {tab == 2 && <Fund />}
+      {tab == 2 && <Fund accounts={accounts} customHttpProvider={accounts} />}
 
-      {tab == 1 && <Marketplace />}
+      {tab == 1 && <Marketplace accounts={accounts} customHttpProvider={provider} />}
     </div>
   );
 };
