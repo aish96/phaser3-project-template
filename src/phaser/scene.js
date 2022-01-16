@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import tiles from "../assets/tilemaps/dungeon.png";
 import dungeon from "../assets/dungeons/dungeon.json";
-import playerImg from "../assets/sprites/addition.png";
+import addition from "../assets/sprites/addition.png";
+import minus from "../assets/sprites/minus.png";
 import box0 from "../assets/tiles/0.jpg";
 import box1 from "../assets/tiles/1.jpg";
 import box2 from "../assets/tiles/2.jpg";
@@ -27,22 +28,22 @@ const SYMBOLS = {
 
 const GAME_DATA = [
   {
-    numbers:[2,3,6],
+    numbers:[2,3],
     answer:5,
     symbol: SYMBOLS.ADD,
-    pos:[{x:60,y:60},{x:220,y:120},{x:220,y:220}]
+    pos:[{x:50,y:305},{x:208,y:110}]
   },
   {
-    numbers:[8,9],
-    answer:17,
+    numbers:[8,9,6],
+    answer:95,
     symbol: SYMBOLS.ADD,
-    pos:[{x:50,y:50},{x:320,y:120}]
+    pos:[{x:210,y:270},{x:335,y:50},{x:528,y:142}]
   },
   {
     numbers:[9,9],
-    answer:1,
-    symbol: SYMBOLS.ADD,
-    pos:[{x:50,y:50},{x:20,y:120}]
+    answer:0,
+    symbol: SYMBOLS.MINUS,
+    pos:[{x:242,y:238},{x:430,y:110}]
   }
 ]
 
@@ -72,7 +73,8 @@ queue=[];
   preload() {
     this.load.image('tiles', tiles);
         this.load.tilemapTiledJSON('dungeon', dungeon);
-        this.load.image('player', playerImg);
+        this.load.image('addition', addition);
+        this.load.image('minus', minus);
         this.load.image('0', box0);
         this.load.image('1', box1);
         this.load.image('2', box2);
@@ -89,15 +91,16 @@ queue=[];
  async create() {
     let map = this.make.tilemap({ key: 'dungeon' });
     let tileset = map.addTilesetImage('dungeon', 'tiles');
-    map.createLayer(1, tileset, 0, 0);
     let layer = map.createLayer(0, tileset, 0, 0);
+    map.createLayer(1, tileset, 0, 0);
     layer.setCollisionByProperty({ collides: true });
 
     this.addExpressionBar();
     for(let i=0 ;i< GAME_DATA.length;i++){
       this.cleanup();
       this.playerGroup = this.add.container(0, 0);
-      this.player = this.physics.add.sprite(0, 0, 'player');
+      let yPos = GAME_DATA[i].symbol===SYMBOLS.ADD? 30:20;
+      this.player = this.physics.add.sprite(-65, yPos, GAME_DATA[i].symbol===SYMBOLS.ADD?"addition":"minus");
       this.player.setData("value",GAME_DATA[0].symbol);
       this.player.setData("type",TYPES.SYMBOL);
       this.queue.push(this.player);
@@ -140,7 +143,7 @@ queue=[];
     if(this.lock){
       this.lock.destroy();
     }
-    this.setExpressionText('+');
+    this.expressionText.setText('');
     this.queue=[];
     this.boxes.forEach(box=>box.destroy());
   }
@@ -155,11 +158,12 @@ queue=[];
         ],
         frameRate: 10,
     });
-    var style = { font: "bold 16px Arial", fill: "#000",//Phaser.Display.Color.HexStringToColor('#000').color, 
+    let xPos = 495,yPos=270;
+    var style = { font: "bold 16px Arial", fill: "#000", 
     boundsAlignH: "center", boundsAlignV: "middle" };
-    this.lock= this.physics.add.sprite(150, 150, 'locked').setScale(0.3);
-    this.add.rectangle(150, 160, 20, 20, Phaser.Display.Color.HexStringToColor('#fff').color).setAlpha(1);
-    this.add.text(150,150,answer,style).setOrigin(0.5,0);
+    this.lock= this.physics.add.sprite(xPos, yPos, 'locked').setScale(0.3);
+    this.add.rectangle(xPos, yPos+10, 20, 20, Phaser.Display.Color.HexStringToColor('#fff').color).setAlpha(1);
+    this.add.text(xPos,yPos,answer,style).setOrigin(0.5,0);
     let collider = this.physics.add.collider(this.playerGroup, this.lock, ()=>{
       let exp = this.queue.reduce((a,b)=>a+b.getData("value"),''),ans=0;
       try{

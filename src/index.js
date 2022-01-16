@@ -9,7 +9,7 @@ import playGame from "./phaser/scene";
 export const config = {
   type: Phaser.AUTO,
     parent: 'phaser',
-    width: 1280,
+    width: 580,
     height: 720,
     physics: {
         default: 'arcade',
@@ -19,7 +19,7 @@ export const config = {
         }
     },
     scale: {
-        zoom: 1.5
+        zoom: 1.8
     },
     scene: [playGame]
 };

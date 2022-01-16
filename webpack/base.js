@@ -7,7 +7,7 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 module.exports = {
 	mode: "development",
 	devtool: "eval-source-map",
-	entry: "./src/index.js", //do we need this?
+	entry: "./src/index.js", //do we need this? -- duh, obviously
 	output: {
 		path: path.resolve("dist"),
 		filename: "index_bundle.js",
