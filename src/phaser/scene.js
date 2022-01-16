@@ -31,11 +31,11 @@ const GAME_DATA = [
     numbers:[2,3],
     answer:5,
     symbol: SYMBOLS.ADD,
-    pos:[{x:50,y:305},{x:208,y:110}],
+    pos:[{x:50,y:305},{x:272,y:110}],
     nft: ["Levelica 1", "This NFT has been awarded for completion of first level", "https://i.imgur.com/M2N57Qm.jpg"]
   },
   {
-    numbers:[8,9,6],
+    numbers:[6,8,9],
     answer:95,
     symbol: SYMBOLS.ADD,
     pos:[{x:210,y:270},{x:335,y:50},{x:528,y:142}],
@@ -103,8 +103,8 @@ queue=[];
       this.cleanup();
       this.playerGroup = this.add.container(0, 0);
       let yPos = GAME_DATA[i].symbol===SYMBOLS.ADD? 30:20;
-      this.player = this.physics.add.sprite(-65, yPos, GAME_DATA[i].symbol===SYMBOLS.ADD?"addition":"minus");
-      this.player.setData("value",GAME_DATA[0].symbol);
+      this.player = this.physics.add.sprite(0,0, GAME_DATA[i].symbol===SYMBOLS.ADD?"addition":"minus");
+      this.player.setData("value",GAME_DATA[i].symbol);
       this.player.setData("type",TYPES.SYMBOL);
       this.queue.push(this.player);
       this.addSpriteToContainer(this.player);
@@ -119,7 +119,7 @@ queue=[];
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(this.playerGroup, false);
     
-    const player = new Player(this.playerGroup, new Phaser.Math.Vector2(3, 0));
+    const player = new Player(this.playerGroup, new Phaser.Math.Vector2(3, 5));
     
     this.gridPhysics = new GridPhysics(player, map);
     this.gridControls = new GridControls(this.input, this.gridPhysics);
