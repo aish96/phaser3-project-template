@@ -18,7 +18,7 @@ import unlocked from "../assets/tiles/unlocked.png";
 import { Direction, Player } from './Player';
 import { GridPhysics } from './GridPhysics';
 import { GridControls } from './GridControl';
-
+import { mintNFT } from "./../components/App.jsx";
 const SYMBOLS = {
   ADD:'+',
   MINUS:'-',
@@ -31,19 +31,22 @@ const GAME_DATA = [
     numbers:[2,3],
     answer:5,
     symbol: SYMBOLS.ADD,
-    pos:[{x:50,y:305},{x:208,y:110}]
+    pos:[{x:50,y:305},{x:208,y:110}],
+    nft: ["Levelica 1", "This NFT has been awarded for completion of first level", "https://i.imgur.com/M2N57Qm.jpg"]
   },
   {
     numbers:[8,9,6],
     answer:95,
     symbol: SYMBOLS.ADD,
-    pos:[{x:210,y:270},{x:335,y:50},{x:528,y:142}]
+    pos:[{x:210,y:270},{x:335,y:50},{x:528,y:142}],
+    nft: ["Levelica 2", "This NFT has been awarded for completion of second level", "https://i.imgur.com/M2N57Qm.jpg"]
   },
   {
     numbers:[9,9],
     answer:0,
     symbol: SYMBOLS.MINUS,
-    pos:[{x:242,y:238},{x:430,y:110}]
+    pos:[{x:242,y:238},{x:430,y:110}],
+    nft: ["Levelica 3", "This NFT has been awarded for completion of third level", "https://i.imgur.com/M2N57Qm.jpg"]
   }
 ]
 
@@ -120,7 +123,8 @@ queue=[];
     
     this.gridPhysics = new GridPhysics(player, map);
     this.gridControls = new GridControls(this.input, this.gridPhysics);
-    await this.createAndUnLock(GAME_DATA[i].answer);
+    await this.createAndUnLock(GAME_DATA[i]);
+
   }
   this.showGameComplete();
   }
@@ -164,18 +168,21 @@ queue=[];
     this.lock= this.physics.add.sprite(xPos, yPos, 'locked').setScale(0.3);
     this.add.rectangle(xPos, yPos+10, 20, 20, Phaser.Display.Color.HexStringToColor('#fff').color).setAlpha(1);
     this.add.text(xPos,yPos,answer,style).setOrigin(0.5,0);
-    let collider = this.physics.add.collider(this.playerGroup, this.lock, ()=>{
+    let collider = this.physics.add.collider(this.playerGroup, this.lock, (e, _lock)=>{
       let exp = this.queue.reduce((a,b)=>a+b.getData("value"),''),ans=0;
       try{
         ans = eval(exp);
       }catch(e){
 
       }
-      if(ans === answer){
+      if(ans === answer.answer){
+       _lock.play("unlock");
       collider.destroy();
+      this.expressionText.setText("Won a NFT!");
+      mintNFT(answer.nft[0], answer.nft[1], answer.nft[2]);
       setTimeout(()=>{
         return resolve();
-      },300);
+      },2000);
     }
     });
     });

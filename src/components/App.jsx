@@ -15,7 +15,7 @@ import axios from "axios";
 //import fs from 'fs';
 //import FormData from 'form-data';
 
-const deployNFTContract = (address) => {
+export const deployNFTContract = (address) => {
   const options = {
     method: "POST",
     url: "https://api.nftport.xyz/v0/contracts",
@@ -25,8 +25,8 @@ const deployNFTContract = (address) => {
     },
     data: {
       chain: "polygon",
-      name: "Polypunks",
-      symbol: "PP",
+      name: "Swanky Manky Math Game",
+      symbol: "SMMG",
       owner_address: address || "0xC6204532A1fF2059b33C574d22A3F5a745217aAE",
       metadata_updatable: false,
     },
@@ -41,29 +41,29 @@ const deployNFTContract = (address) => {
       console.error(error);
     });
 };
-// const getIPFSURL = (image) => {
-//   const form = new FormData();
-//   const fileStream = fs.createReadStream("image.jpg");
-//   form.append("file", fileStream);
+export const getIPFSURL = (image) => {
+  const form = new FormData();
+  const fileStream = fs.createReadStream("image.jpg");
+  form.append("file", fileStream);
 
-//   const options = {
-//     method: "POST",
-//     body: form,
-//     headers: {
-//       Authorization: "05e8cdcc-db29-4477-8540-42ce01ae8fc9",
-//     },
-//   };
+  const options = {
+    method: "POST",
+    body: form,
+    headers: {
+      Authorization: "05e8cdcc-db29-4477-8540-42ce01ae8fc9",
+    },
+  };
 
-//   axios.post("https://api.nftport.xyz/v0/files", options)
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((responseJson) => {
-//       // Handle the response
-//       console.log(responseJson);
-//     });
-// };
-const mintNFT = (name, address, description, ipfs_url) => {
+  axios.post("https://api.nftport.xyz/v0/files", options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseJson) => {
+      // Handle the response
+      console.log(responseJson);
+    });
+};
+export const mintNFT = (name, description, ipfs_url) => {
   const options = {
     method: "POST",
     url: "https://api.nftport.xyz/v0/metadata",
@@ -74,6 +74,7 @@ const mintNFT = (name, address, description, ipfs_url) => {
     data: {
       name: name,
       description: description,
+	  contract_address: "0x98f678EaaD11f6a522d38C741C1A9Df7aDFb2ba7",
       file_url: ipfs_url,
       attributes: [
         { trait_type: "Operator", value: "Addition" },
@@ -97,7 +98,7 @@ const App = () => {
   const [web3, setWeb3] = useState(undefined);
   const [accounts, setAccounts] = useState(undefined);
   const [tab, setTab] = useState(0);
-
+  const [provider, setProvider] = useState(undefined);
   const changeTabs = (taab, gamed) => {
     setTab(taab);
     const gamedisplay = document.getElementById("phaser");
@@ -117,6 +118,7 @@ const App = () => {
       const accountsa = await web3.eth.getAccounts();
       setAccounts(accountsa);
       setWeb3(web3);
+	  setProvider(accountsmain);
     };
     init();
   }, []);
@@ -128,7 +130,7 @@ const App = () => {
           <a onClick={(e) => changeTabs(0, true)}>Game</a>
         </li>
         <li>
-          <a onClick={(e) => changeTabs(1, false)}> Egg Marketplace </a>
+          <a onClick={(e) => changeTabs(1, false)}> Marketplace </a>
         </li>
         <li>
           <a onClick={(e) => changeTabs(2, false)}> Support Early Education </a>
@@ -152,9 +154,9 @@ const App = () => {
       </ul>
       <br />
       {tab == 3 && <Wallet accounts={accounts} styles={styles} />}
-      {tab == 2 && <Fund />}
+      {tab == 2 && <Fund accounts={accounts} customHttpProvider={accounts} />}
 
-      {tab == 1 && <Marketplace />}
+      {tab == 1 && <Marketplace accounts={accounts} customHttpProvider={provider} />}
     </div>
   );
 };
