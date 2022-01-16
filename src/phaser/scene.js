@@ -167,7 +167,7 @@ queue=[];
     boundsAlignH: "center", boundsAlignV: "middle" };
     this.lock= this.physics.add.sprite(xPos, yPos, 'locked').setScale(0.3);
     this.add.rectangle(xPos, yPos+10, 20, 20, Phaser.Display.Color.HexStringToColor('#fff').color).setAlpha(1);
-    this.add.text(xPos,yPos,answer,style).setOrigin(0.5,0);
+    this.add.text(xPos,yPos,answer.answer,style).setOrigin(0.5,0);
     let collider = this.physics.add.collider(this.playerGroup, this.lock, (e, _lock)=>{
       let exp = this.queue.reduce((a,b)=>a+b.getData("value"),''),ans=0;
       try{
